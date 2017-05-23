@@ -24,7 +24,12 @@ app.use(express.static("app/public"));
 var routes = require("./controllers/burgers_controller.js");
 
 app.use('/', routes);
-// Server is listening//
-app.listen(PORT, function() {
-  console.log("App listening on PORT " + PORT);
+
+//Syncing data models//
+var db = require("./models");
+
+db.sequelize.sync({ force: true }).then(function() {
+  app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+  });
 });

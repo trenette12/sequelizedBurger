@@ -1,25 +1,13 @@
-var orm = require("../config/orm.js");
-
+var Sequelize = require("sequelize");
+var sequelize = require("..config/connection.js")
 //Calling the orms functions with specific data//
-var burger = {
-  selectAll: function(edb) {
-    orm.selectAll('burgers', function(res) {
-      edb(res);
-    });
-  },
-  insertOne: function(name, edb) {
-    orm.insertOne('burgers', [
-      'burger_name', 'devoured'
-    ], [
-      name, false
-    ], edb);
-  },
-  updateOne: function(id, edb) {
-    var burgerid = 'id=' + id;
-    orm.updateOne('burgers', {
-      devoured: true
-    }, burgerid, edb);
-  }
-};
+module.exports = function(sequelize, DataTypes) {
+  var burger = sequelize.define("burgers", {
+    burger_name: DataTypes.STRING,
+    devoured: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
+  });
 
-module.exports = burger;
+burger.sync();
